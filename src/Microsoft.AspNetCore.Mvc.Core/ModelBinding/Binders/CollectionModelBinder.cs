@@ -207,8 +207,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                         // our temporary provider goes at the front of the list
                         new ElementalValueProvider(bindingContext.ModelName, value, values.Culture),
                         bindingContext.ValueProvider
-                    },
-                    _loggerFactory);
+                    });
 
                 using (bindingContext.EnterNestedScope(
                     elementMetadata,

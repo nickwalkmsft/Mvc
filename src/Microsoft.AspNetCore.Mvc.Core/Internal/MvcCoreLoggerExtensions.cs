@@ -111,8 +111,6 @@ namespace Microsoft.AspNetCore.Mvc.Internal
         private static readonly Action<ILogger, string, string, Exception> _noNonIndexBasedFormatFoundForCollection;
         private static readonly Action<ILogger, string, string, string, string, string, string, Exception> _attemptingToBindCollectionUsingIndices;
         private static readonly Action<ILogger, string, string, string, string, string, string, Exception> _attemptingToBindCollectionOfKeyValuePair;
-        private static readonly Action<ILogger, string, Exception> _noValueFromValueProviders;
-        private static readonly Action<ILogger, string, Exception> _noPrefixFromValueProviders;
         private static readonly Action<ILogger, string, string, string, Exception> _noKeyValueFormatForDictionaryModelBinder;
         private static readonly Action<ILogger, Type, string, Type, string, Exception> _attemptingToBindPropertyModel;
         private static readonly Action<ILogger, Type, string, Type, Exception> _doneAttemptingToBindPropertyModel;
@@ -570,16 +568,6 @@ namespace Microsoft.AspNetCore.Mvc.Internal
                 "[0].Key=key1&[0].Value=value1&[1].Key=key2&[1].Value=value2, " +
                 "{ModelName}[0].Key=key1&{ModelName}[0].Value=value1&{ModelName}[1].Key=key2&{ModelName}[1].Value=value2, " +
                 "{ModelName}[key1]=value1&{ModelName}[key2]=value2");
-
-            _noValueFromValueProviders = LoggerMessage.Define<string>(
-                LogLevel.Debug,
-                31,
-                "Could not get a value for the key '{ValueProviderKey}' from any of the registered value providers.");
-
-            _noPrefixFromValueProviders = LoggerMessage.Define<string>(
-                LogLevel.Debug,
-                32,
-                "Could not get a value for the prefix '{ValueProviderPrefix}' from any of the registered value providers.");
 
             _noKeyValueFormatForDictionaryModelBinder = LoggerMessage.Define<string, string, string>(
                 LogLevel.Debug,
@@ -1260,16 +1248,6 @@ namespace Microsoft.AspNetCore.Mvc.Internal
             }
 
             _attemptingToBindCollectionUsingIndices(logger, modelName, modelName, modelName, modelName, modelName, modelName, null);
-        }
-
-        public static void NoValueFromValueProviders(this ILogger logger, string key)
-        {
-            _noValueFromValueProviders(logger, key, null);
-        }
-
-        public static void NoPrefixFromValueProviders(this ILogger logger, string key)
-        {
-            _noPrefixFromValueProviders(logger, key, null);
         }
 
         public static void NoKeyValueFormatForDictionaryModelBinder(this ILogger logger, ModelBindingContext bindingContext)

@@ -4,8 +4,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Microsoft.AspNetCore.Mvc.ModelBinding
 {
@@ -18,7 +16,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
         private ActionContext _actionContext;
         private ModelStateDictionary _modelState;
         private ValidationStateDictionary _validationState;
-        private ILoggerFactory _loggerFactory;
 
         private State _state;
         private readonly Stack<State> _stack = new Stack<State>();
@@ -227,7 +224,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var propertyFilterProvider = bindingInfo?.PropertyFilterProvider ?? metadata.PropertyFilterProvider;
 
             var bindingSource = bindingInfo?.BindingSource ?? metadata.BindingSource;
-            var loggerFactory = actionContext.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>();
 
             return new DefaultModelBindingContext()
             {
@@ -235,7 +231,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 BinderModelName = binderModelName,
                 BindingSource = bindingSource,
                 PropertyFilter = propertyFilterProvider?.PropertyFilter,
-                _loggerFactory = loggerFactory,
 
                 // Because this is the top-level context, FieldName and ModelName should be the same.
                 FieldName = binderModelName ?? modelName,
@@ -246,7 +241,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 ModelState = actionContext.ModelState,
 
                 OriginalValueProvider = valueProvider,
-                ValueProvider = FilterValueProvider(valueProvider, bindingSource, loggerFactory),
+                ValueProvider = FilterValueProvider(valueProvider, bindingSource),
 
                 ValidationState = new ValidationStateDictionary(),
             };
@@ -280,7 +275,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             // to preserve the current state.
             if (modelMetadata.BindingSource != null && !modelMetadata.BindingSource.IsGreedy)
             {
-                ValueProvider = FilterValueProvider(OriginalValueProvider, modelMetadata.BindingSource, _loggerFactory);
+                ValueProvider = FilterValueProvider(OriginalValueProvider, modelMetadata.BindingSource);
             }
 
             Model = model;
@@ -314,8 +309,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
 
         private static IValueProvider FilterValueProvider(
             IValueProvider valueProvider,
-            BindingSource bindingSource,
-            ILoggerFactory loggerFactory)
+            BindingSource bindingSource)
         {
             if (bindingSource == null || bindingSource.IsGreedy)
             {
@@ -328,7 +322,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 return valueProvider;
             }
 
-            return bindingSourceValueProvider.Filter(bindingSource) ?? new CompositeValueProvider(loggerFactory);
+            return bindingSourceValueProvider.Filter(bindingSource) ?? new CompositeValueProvider();
         }
 
         private struct State

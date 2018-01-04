@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Microsoft.AspNetCore.Mvc.RazorPages.Internal
 {
@@ -43,8 +41,7 @@ namespace Microsoft.AspNetCore.Mvc.RazorPages.Internal
                 await factory.CreateValueProviderAsync(valueProviderFactoryContext);
             }
 
-            var loggerFactory = pageContext.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>();
-            return new CompositeValueProvider(valueProviderFactoryContext.ValueProviders, loggerFactory);
+            return new CompositeValueProvider(valueProviderFactoryContext.ValueProviders);
         }
     }
 }

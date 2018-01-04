@@ -6,10 +6,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Internal;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Microsoft.AspNetCore.Mvc.ModelBinding
 {
@@ -21,25 +17,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
         IEnumerableValueProvider,
         IBindingSourceValueProvider
     {
-        private readonly ILoggerFactory _loggerFactory;
-        protected readonly ILogger logger;
-
         /// <summary>
         /// Initializes a new instance of <see cref="CompositeValueProvider"/>.
         /// </summary>
         public CompositeValueProvider()
-            : this(NullLoggerFactory.Instance)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="CompositeValueProvider"/>.
-        /// </summary>
-        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
-        public CompositeValueProvider(ILoggerFactory loggerFactory)
-        {
-            _loggerFactory = loggerFactory;
-            logger = loggerFactory.CreateLogger(GetType());
         }
 
         /// <summary>
@@ -48,21 +30,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
         /// <param name="valueProviders">The sequence of <see cref="IValueProvider"/> to add to this instance of
         /// <see cref="CompositeValueProvider"/>.</param>
         public CompositeValueProvider(IList<IValueProvider> valueProviders)
-            : this(valueProviders, NullLoggerFactory.Instance)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="CompositeValueProvider"/>.
-        /// </summary>
-        /// <param name="valueProviders">The sequence of <see cref="IValueProvider"/> to add to this instance of
-        /// <see cref="CompositeValueProvider"/>.</param>
-        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
-        public CompositeValueProvider(IList<IValueProvider> valueProviders, ILoggerFactory loggerFactory)
             : base(valueProviders)
         {
-            _loggerFactory = loggerFactory;
-            logger = loggerFactory.CreateLogger(GetType());
         }
 
         /// <summary>
@@ -108,8 +77,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 await factory.CreateValueProviderAsync(valueProviderFactoryContext);
             }
 
-            var loggerFactory = actionContext.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>();
-            return new CompositeValueProvider(valueProviderFactoryContext.ValueProviders, loggerFactory);
+            return new CompositeValueProvider(valueProviderFactoryContext.ValueProviders);
         }
 
         /// <inheritdoc />
@@ -123,7 +91,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 }
             }
 
-            logger.NoPrefixFromValueProviders(prefix);
             return false;
         }
 
@@ -143,7 +110,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 }
             }
 
-            logger.NoValueFromValueProviders(key);
             return ValueProviderResult.None;
         }
 
@@ -217,7 +183,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 return this;
             }
 
-            return new CompositeValueProvider(filteredValueProviders, _loggerFactory);
+            return new CompositeValueProvider(filteredValueProviders);
         }
     }
 }
