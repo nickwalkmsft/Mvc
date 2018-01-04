@@ -45,20 +45,20 @@ namespace Microsoft.AspNetCore.Mvc.Internal
             // Set up ModelBinding
             options.ModelBinderProviders.Add(new BinderTypeModelBinderProvider());
             options.ModelBinderProviders.Add(new ServicesModelBinderProvider());
-            options.ModelBinderProviders.Add(new BodyModelBinderProvider(options.InputFormatters, _readerFactory, _loggerFactory, options));
-            options.ModelBinderProviders.Add(new HeaderModelBinderProvider(_loggerFactory));
-            options.ModelBinderProviders.Add(new FloatingPointTypeModelBinderProvider(_loggerFactory));
-            options.ModelBinderProviders.Add(new EnumTypeModelBinderProvider(options, _loggerFactory));
-            options.ModelBinderProviders.Add(new SimpleTypeModelBinderProvider(_loggerFactory));
+            options.ModelBinderProviders.Add(new BodyModelBinderProvider(options.InputFormatters, _readerFactory, options));
+            options.ModelBinderProviders.Add(new HeaderModelBinderProvider());
+            options.ModelBinderProviders.Add(new FloatingPointTypeModelBinderProvider());
+            options.ModelBinderProviders.Add(new EnumTypeModelBinderProvider(options));
+            options.ModelBinderProviders.Add(new SimpleTypeModelBinderProvider());
             options.ModelBinderProviders.Add(new CancellationTokenModelBinderProvider());
-            options.ModelBinderProviders.Add(new ByteArrayModelBinderProvider(_loggerFactory));
-            options.ModelBinderProviders.Add(new FormFileModelBinderProvider(_loggerFactory));
-            options.ModelBinderProviders.Add(new FormCollectionModelBinderProvider(_loggerFactory));
-            options.ModelBinderProviders.Add(new KeyValuePairModelBinderProvider(_loggerFactory));
-            options.ModelBinderProviders.Add(new DictionaryModelBinderProvider(_loggerFactory));
-            options.ModelBinderProviders.Add(new ArrayModelBinderProvider(_loggerFactory));
-            options.ModelBinderProviders.Add(new CollectionModelBinderProvider(_loggerFactory));
-            options.ModelBinderProviders.Add(new ComplexTypeModelBinderProvider(_loggerFactory));
+            options.ModelBinderProviders.Add(new ByteArrayModelBinderProvider());
+            options.ModelBinderProviders.Add(new FormFileModelBinderProvider());
+            options.ModelBinderProviders.Add(new FormCollectionModelBinderProvider());
+            options.ModelBinderProviders.Add(new KeyValuePairModelBinderProvider());
+            options.ModelBinderProviders.Add(new DictionaryModelBinderProvider());
+            options.ModelBinderProviders.Add(new ArrayModelBinderProvider());
+            options.ModelBinderProviders.Add(new CollectionModelBinderProvider());
+            options.ModelBinderProviders.Add(new ComplexTypeModelBinderProvider());
 
             // Set up filters
             options.Filters.Add(new UnsupportedContentTypeFilter());

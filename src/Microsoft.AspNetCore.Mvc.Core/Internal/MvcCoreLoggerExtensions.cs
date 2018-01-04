@@ -1126,9 +1126,9 @@ namespace Microsoft.AspNetCore.Mvc.Internal
                 _foundNoValueForPropertyInRequest(
                     logger,
                     bindingContext.ModelName,
-                    bindingContext.ModelType,
-                    modelMetadata.PropertyName,
                     modelMetadata.ContainerType,
+                    modelMetadata.PropertyName,
+                    bindingContext.ModelType,
                     null);
             }
             else
@@ -1181,9 +1181,9 @@ namespace Microsoft.AspNetCore.Mvc.Internal
             {
                 _attemptingToBindPropertyModel(
                     logger,
-                    modelMetadata.ModelType,
-                    modelMetadata.PropertyName,
                     modelMetadata.ContainerType,
+                    modelMetadata.PropertyName,
+                    modelMetadata.ModelType,
                     bindingContext.ModelName,
                     null);
             }
@@ -1202,9 +1202,9 @@ namespace Microsoft.AspNetCore.Mvc.Internal
             {
                 _doneAttemptingToBindPropertyModel(
                     logger,
-                    modelMetadata.ModelType,
-                    modelMetadata.PropertyName,
                     modelMetadata.ContainerType,
+                    modelMetadata.PropertyName,
+                    modelMetadata.ModelType,
                     null);
             }
             else

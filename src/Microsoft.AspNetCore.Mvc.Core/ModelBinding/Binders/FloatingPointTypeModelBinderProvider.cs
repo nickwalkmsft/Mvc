@@ -3,8 +3,8 @@
 
 using System;
 using System.Globalization;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 {
@@ -17,25 +17,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         // SimpleTypeModelBinder uses DecimalConverter and similar. Those TypeConverters default to NumberStyles.Float.
         // Internal for testing.
         internal static readonly NumberStyles SupportedStyles = NumberStyles.Float | NumberStyles.AllowThousands;
-        private readonly ILoggerFactory _loggerFactory;
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="FloatingPointTypeModelBinderProvider"/>.
-        /// </summary>
-        public FloatingPointTypeModelBinderProvider()
-            : this(NullLoggerFactory.Instance)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="FloatingPointTypeModelBinderProvider"/>.
-        /// </summary>
-        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
-        public FloatingPointTypeModelBinderProvider(ILoggerFactory loggerFactory)
-        {
-            _loggerFactory = loggerFactory;
-        }
-
+        
         /// <inheritdoc />
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
@@ -45,19 +27,20 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
             }
 
             var modelType = context.Metadata.UnderlyingOrModelType;
+            var loggerFactory = context.Services.GetRequiredService<ILoggerFactory>();
             if (modelType == typeof(decimal))
             {
-                return new DecimalModelBinder(SupportedStyles, _loggerFactory);
+                return new DecimalModelBinder(SupportedStyles, loggerFactory);
             }
 
             if (modelType == typeof(double))
             {
-                return new DoubleModelBinder(SupportedStyles, _loggerFactory);
+                return new DoubleModelBinder(SupportedStyles, loggerFactory);
             }
 
             if (modelType == typeof(float))
             {
-                return new FloatModelBinder(SupportedStyles, _loggerFactory);
+                return new FloatModelBinder(SupportedStyles, loggerFactory);
             }
 
             return null;

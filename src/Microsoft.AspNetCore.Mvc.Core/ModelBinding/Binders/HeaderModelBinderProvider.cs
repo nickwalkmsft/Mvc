@@ -3,8 +3,8 @@
 
 using System;
 using Microsoft.AspNetCore.Mvc.Internal;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 {
@@ -13,27 +13,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     /// </summary>
     public class HeaderModelBinderProvider : IModelBinderProvider
     {
-        private readonly ILoggerFactory _loggerFactory;
-        private readonly ILogger _logger;
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="HeaderModelBinderProvider"/>.
-        /// </summary>
-        public HeaderModelBinderProvider()
-            : this(NullLoggerFactory.Instance)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="HeaderModelBinderProvider"/>.
-        /// </summary>
-        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
-        public HeaderModelBinderProvider(ILoggerFactory loggerFactory)
-        {
-            _loggerFactory = loggerFactory;
-            _logger = _loggerFactory.CreateLogger(GetType());
-        }
-
         /// <inheritdoc />
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
@@ -45,16 +24,19 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
             if (context.BindingInfo.BindingSource != null &&
                 context.BindingInfo.BindingSource.CanAcceptDataFrom(BindingSource.Header))
             {
+                var loggerFactory = context.Services.GetRequiredService<ILoggerFactory>();
+                var logger = loggerFactory.CreateLogger<HeaderModelBinderProvider>();
+
                 // We only support strings and collections of strings. Some cases can fail
                 // at runtime due to collections we can't modify.
                 if (context.Metadata.ModelType == typeof(string) ||
                     context.Metadata.ElementType == typeof(string))
                 {
-                    return new HeaderModelBinder(_loggerFactory);
+                    return new HeaderModelBinder(loggerFactory);
                 }
                 else
                 {
-                    _logger.CannotCreateHeaderModelBinder(context.Metadata.ModelType);
+                    logger.CannotCreateHeaderModelBinder(context.Metadata.ModelType);
                 }
             }
 

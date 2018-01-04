@@ -5,8 +5,8 @@ using System;
 using System.Reflection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Core;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 {
@@ -15,18 +15,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     /// </summary>
     public class FormCollectionModelBinderProvider : IModelBinderProvider
     {
-        private readonly ILoggerFactory _loggerFactory;
-
-        public FormCollectionModelBinderProvider()
-            : this(NullLoggerFactory.Instance)
-        {
-        }
-
-        public FormCollectionModelBinderProvider(ILoggerFactory loggerFactory)
-        {
-            _loggerFactory = loggerFactory;
-        }
-
         /// <inheritdoc />
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
@@ -48,7 +36,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 
             if (modelType == typeof(IFormCollection))
             {
-                return new FormCollectionModelBinder(_loggerFactory);
+                var loggerFactory = context.Services.GetRequiredService<ILoggerFactory>();
+                return new FormCollectionModelBinder(loggerFactory);
             }
 
             return null;

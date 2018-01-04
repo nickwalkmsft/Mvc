@@ -2,8 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 {
@@ -12,25 +12,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     /// </summary>
     public class SimpleTypeModelBinderProvider : IModelBinderProvider
     {
-        private readonly ILoggerFactory _loggerFactory;
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="SimpleTypeModelBinderProvider"/>.
-        /// </summary>
-        public SimpleTypeModelBinderProvider()
-            : this(NullLoggerFactory.Instance)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="SimpleTypeModelBinderProvider"/>.
-        /// </summary>
-        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
-        public SimpleTypeModelBinderProvider(ILoggerFactory loggerFactory)
-        {
-            _loggerFactory = loggerFactory;
-        }
-
         /// <inheritdoc />
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
@@ -41,7 +22,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 
             if (!context.Metadata.IsComplexType)
             {
-                return new SimpleTypeModelBinder(context.Metadata.ModelType, _loggerFactory);
+                var loggerFactory = context.Services.GetRequiredService<ILoggerFactory>();
+                return new SimpleTypeModelBinder(context.Metadata.ModelType, loggerFactory);
             }
 
             return null;

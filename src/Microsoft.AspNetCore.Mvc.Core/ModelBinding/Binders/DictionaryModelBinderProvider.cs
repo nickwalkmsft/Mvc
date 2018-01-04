@@ -3,9 +3,9 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 {
@@ -14,25 +14,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     /// </summary>
     public class DictionaryModelBinderProvider : IModelBinderProvider
     {
-        private readonly ILoggerFactory _loggerFactory;
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="DictionaryModelBinderProvider"/>.
-        /// </summary>
-        public DictionaryModelBinderProvider()
-            : this(NullLoggerFactory.Instance)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="DictionaryModelBinderProvider"/>.
-        /// </summary>
-        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
-        public DictionaryModelBinderProvider(ILoggerFactory loggerFactory)
-        {
-            _loggerFactory = loggerFactory;
-        }
-
         /// <inheritdoc />
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
@@ -52,7 +33,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 var valueBinder = context.CreateBinder(context.MetadataProvider.GetMetadataForType(valueType));
 
                 var binderType = typeof(DictionaryModelBinder<,>).MakeGenericType(dictionaryType.GenericTypeArguments);
-                return (IModelBinder)Activator.CreateInstance(binderType, keyBinder, valueBinder, _loggerFactory);
+                var loggerFactory = context.Services.GetRequiredService<ILoggerFactory>();
+                return (IModelBinder)Activator.CreateInstance(binderType, keyBinder, valueBinder, loggerFactory);
             }
 
             return null;
