@@ -90,7 +90,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                     return true;
                 }
             }
-
             return false;
         }
 

@@ -54,7 +54,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
             _valueBinder = valueBinder;
             _logger = loggerFactory.CreateLogger(GetType());
         }
-        
+
         /// <inheritdoc />
         public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
@@ -99,7 +99,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 _logger.DoneAttemptingToBindModel(bindingContext);
                 return;
             }
-            
+
             // If we failed to find data for a top-level model, then generate a
             // default 'empty' model and return it.
             if (bindingContext.IsTopLevelObject)

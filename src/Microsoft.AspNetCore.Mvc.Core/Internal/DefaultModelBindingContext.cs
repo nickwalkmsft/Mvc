@@ -307,9 +307,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             _state = _stack.Pop();
         }
 
-        private static IValueProvider FilterValueProvider(
-            IValueProvider valueProvider,
-            BindingSource bindingSource)
+        private static IValueProvider FilterValueProvider(IValueProvider valueProvider, BindingSource bindingSource)
         {
             if (bindingSource == null || bindingSource.IsGreedy)
             {
