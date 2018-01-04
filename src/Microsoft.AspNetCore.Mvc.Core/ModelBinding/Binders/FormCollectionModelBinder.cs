@@ -19,6 +19,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     /// </summary>
     public class FormCollectionModelBinder : IModelBinder
     {
+        private readonly ILogger _logger;
+
         /// <summary>
         /// Initializes a new instance of <see cref="FormCollectionModelBinder"/>.
         /// </summary>
@@ -33,14 +35,9 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
         public FormCollectionModelBinder(ILoggerFactory loggerFactory)
         {
-            Logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger(GetType());
         }
-
-        /// <summary>
-        /// The <see cref="ILogger"/> used for logging in this binder.
-        /// </summary>
-        protected ILogger Logger { get; }
-
+        
         /// <inheritdoc />
         public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
@@ -49,7 +46,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 throw new ArgumentNullException(nameof(bindingContext));
             }
 
-            Logger.AttemptingToBindModel(bindingContext);
+            _logger.AttemptingToBindModel(bindingContext);
 
             object model;
             var request = bindingContext.HttpContext.Request;
@@ -60,12 +57,12 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
             }
             else
             {
-                Logger.CannotBindToFilesCollectionDueToUnsupportedContentType(bindingContext);
+                _logger.CannotBindToFilesCollectionDueToUnsupportedContentType(bindingContext);
                 model = new EmptyFormCollection();
             }
 
             bindingContext.Result = ModelBindingResult.Success(model);
-            Logger.DoneAttemptingToBindModel(bindingContext);
+            _logger.DoneAttemptingToBindModel(bindingContext);
         }
 
         private class EmptyFormCollection : IFormCollection

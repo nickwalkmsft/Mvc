@@ -20,6 +20,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     {
         private readonly IModelBinder _keyBinder;
         private readonly IModelBinder _valueBinder;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// Creates a new <see cref="KeyValuePair{TKey, TValue}"/>.
@@ -51,14 +52,9 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 
             _keyBinder = keyBinder;
             _valueBinder = valueBinder;
-            Logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger(GetType());
         }
-
-        /// <summary>
-        /// The <see cref="ILogger"/> used for logging in this binder.
-        /// </summary>
-        protected ILogger Logger { get; }
-
+        
         /// <inheritdoc />
         public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
@@ -67,7 +63,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 throw new ArgumentNullException(nameof(bindingContext));
             }
 
-            Logger.AttemptingToBindModel(bindingContext);
+            _logger.AttemptingToBindModel(bindingContext);
 
             var keyModelName = ModelNames.CreatePropertyModelName(bindingContext.ModelName, "Key");
             var keyResult = await TryBindStrongModel<TKey>(bindingContext, _keyBinder, "Key", keyModelName);
@@ -82,7 +78,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                     ModelBindingHelper.CastOrDefault<TValue>(valueResult.Model));
 
                 bindingContext.Result = ModelBindingResult.Success(model);
-                Logger.DoneAttemptingToBindModel(bindingContext);
+                _logger.DoneAttemptingToBindModel(bindingContext);
                 return;
             }
 
@@ -91,7 +87,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 bindingContext.ModelState.TryAddModelError(
                     keyModelName,
                     bindingContext.ModelMetadata.ModelBindingMessageProvider.MissingKeyOrValueAccessor());
-                Logger.DoneAttemptingToBindModel(bindingContext);
+                _logger.DoneAttemptingToBindModel(bindingContext);
                 return;
             }
 
@@ -100,7 +96,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 bindingContext.ModelState.TryAddModelError(
                     valueModelName,
                     bindingContext.ModelMetadata.ModelBindingMessageProvider.MissingKeyOrValueAccessor());
-                Logger.DoneAttemptingToBindModel(bindingContext);
+                _logger.DoneAttemptingToBindModel(bindingContext);
                 return;
             }
             
@@ -111,7 +107,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 var model = new KeyValuePair<TKey, TValue>();
                 bindingContext.Result = ModelBindingResult.Success(model);
             }
-            Logger.DoneAttemptingToBindModel(bindingContext);
+            _logger.DoneAttemptingToBindModel(bindingContext);
         }
 
         internal async Task<ModelBindingResult> TryBindStrongModel<TModel>(

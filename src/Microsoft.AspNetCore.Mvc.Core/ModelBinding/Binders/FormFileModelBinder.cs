@@ -21,6 +21,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     /// </summary>
     public class FormFileModelBinder : IModelBinder
     {
+        private readonly ILogger _logger;
+
         /// <summary>
         /// Initializes a new instance of <see cref="FormFileModelBinder"/>.
         /// </summary>
@@ -35,14 +37,9 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
         public FormFileModelBinder(ILoggerFactory loggerFactory)
         {
-            Logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger(GetType());
         }
-
-        /// <summary>
-        /// The <see cref="ILogger"/> used for logging in this binder.
-        /// </summary>
-        protected ILogger Logger { get; }
-
+        
         /// <inheritdoc />
         public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
@@ -51,7 +48,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 throw new ArgumentNullException(nameof(bindingContext));
             }
 
-            Logger.AttemptingToBindModel(bindingContext);
+            _logger.AttemptingToBindModel(bindingContext);
 
             var createFileCollection = bindingContext.ModelType == typeof(IFormFileCollection);
             if (!createFileCollection && !ModelBindingHelper.CanGetCompatibleCollection<IFormFile>(bindingContext))
@@ -85,7 +82,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 if (postedFiles.Count == 0)
                 {
                     // Silently fail if the named file does not exist in the request.
-                    Logger.DoneAttemptingToBindModel(bindingContext);
+                    _logger.DoneAttemptingToBindModel(bindingContext);
                     return;
                 }
 
@@ -97,7 +94,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 {
                     // Silently fail if no files match. Will bind to an empty collection (treat empty as a success
                     // case and not reach here) if binding to a top-level object.
-                    Logger.DoneAttemptingToBindModel(bindingContext);
+                    _logger.DoneAttemptingToBindModel(bindingContext);
                     return;
                 }
 
@@ -132,7 +129,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 attemptedValue: null);
 
             bindingContext.Result = ModelBindingResult.Success(value);
-            Logger.DoneAttemptingToBindModel(bindingContext);
+            _logger.DoneAttemptingToBindModel(bindingContext);
         }
 
         private async Task GetFormFilesAsync(
@@ -161,12 +158,12 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 
                 if (postedFiles.Count == 0)
                 {
-                    Logger.NoFilesFoundInRequest();
+                    _logger.NoFilesFoundInRequest();
                 }
             }
             else
             {
-                Logger.CannotBindToFilesCollectionDueToUnsupportedContentType(bindingContext);
+                _logger.CannotBindToFilesCollectionDueToUnsupportedContentType(bindingContext);
             }
         }
 

@@ -19,6 +19,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     public class ComplexTypeModelBinder : IModelBinder
     {
         private readonly IDictionary<ModelMetadata, IModelBinder> _propertyBinders;
+        private readonly ILogger _logger;
         private Func<object> _modelCreator;
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
         public ComplexTypeModelBinder(ILoggerFactory loggerFactory)
         {
-            Logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger(GetType());
         }
 
         /// <summary>
@@ -72,14 +73,9 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
             }
 
             _propertyBinders = propertyBinders;
-            Logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger(GetType());
         }
-
-        /// <summary>
-        /// The <see cref="ILogger"/> used for logging in this binder.
-        /// </summary>
-        protected ILogger Logger { get; }
-
+        
         /// <inheritdoc />
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
@@ -88,7 +84,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 throw new ArgumentNullException(nameof(bindingContext));
             }
 
-            Logger.AttemptingToBindModel(bindingContext);
+            _logger.AttemptingToBindModel(bindingContext);
 
             if (!CanCreateModel(bindingContext))
             {
@@ -154,7 +150,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
             }
 
             bindingContext.Result = ModelBindingResult.Success(bindingContext.Model);
-            Logger.DoneAttemptingToBindModel(bindingContext);
+            _logger.DoneAttemptingToBindModel(bindingContext);
         }
 
         /// <summary>
@@ -248,7 +244,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
             // level object. So we return false.
             if (bindingContext.ModelMetadata.Properties.Count == 0)
             {
-                Logger.NoPublicSettableProperties(bindingContext);
+                _logger.NoPublicSettableProperties(bindingContext);
                 return false;
             }
 
@@ -317,7 +313,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 
             if (hasBindableProperty && isAnyPropertyEnabledForValueProviderBasedBinding)
             {
-                Logger.CannotBindToComplexType(bindingContext);
+                _logger.CannotBindToComplexType(bindingContext);
             }
 
             if (hasBindableProperty && !isAnyPropertyEnabledForValueProviderBasedBinding)

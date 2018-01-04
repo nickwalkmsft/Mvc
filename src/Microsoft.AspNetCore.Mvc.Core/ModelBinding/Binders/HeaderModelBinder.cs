@@ -17,6 +17,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     /// </summary>
     public class HeaderModelBinder : IModelBinder
     {
+        private readonly ILogger _logger;
+
         /// <summary>
         /// Initializes a new instance of <see cref="HeaderModelBinder"/>.
         /// </summary>
@@ -31,13 +33,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
         public HeaderModelBinder(ILoggerFactory loggerFactory)
         {
-            Logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger(GetType());
         }
-
-        /// <summary>
-        /// The <see cref="ILogger"/> used for logging in this binder.
-        /// </summary>
-        protected ILogger Logger { get; }
 
         /// <inheritdoc />
         public Task BindModelAsync(ModelBindingContext bindingContext)
@@ -52,11 +49,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
             // Property name can be null if the model metadata represents a type (rather than a property or parameter).
             var headerName = bindingContext.FieldName;
 
-            Logger.AttemptingToBindModel(bindingContext);
+            _logger.AttemptingToBindModel(bindingContext);
 
             if (!request.Headers.ContainsKey(headerName))
             {
-                Logger.FoundNoValueInRequest(bindingContext);
+                _logger.FoundNoValueInRequest(bindingContext);
             }
 
             object model;
@@ -94,7 +91,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 bindingContext.Result = ModelBindingResult.Success(model);
             }
 
-            Logger.DoneAttemptingToBindModel(bindingContext);
+            _logger.DoneAttemptingToBindModel(bindingContext);
             return Task.CompletedTask;
         }
 

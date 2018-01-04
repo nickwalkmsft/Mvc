@@ -14,6 +14,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     /// </summary>
     public class ByteArrayModelBinder : IModelBinder
     {
+        private readonly ILogger _logger;
+
         /// <summary>
         /// Initializes a new instance of <see cref="ByteArrayModelBinder"/>.
         /// </summary>
@@ -28,13 +30,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
         public ByteArrayModelBinder(ILoggerFactory loggerFactory)
         {
-            Logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger(GetType());
         }
-
-        /// <summary>
-        /// The <see cref="ILogger"/> used for logging in this binder.
-        /// </summary>
-        protected ILogger Logger { get; }
 
         /// <inheritdoc />
         public async Task BindModelAsync(ModelBindingContext bindingContext)
@@ -44,11 +41,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 throw new ArgumentNullException(nameof(bindingContext));
             }
 
-            Logger.AttemptingToBindModel(bindingContext);
+            _logger.AttemptingToBindModel(bindingContext);
 
             await BindModelAsyncInternal(bindingContext);
 
-            Logger.DoneAttemptingToBindModel(bindingContext);
+            _logger.DoneAttemptingToBindModel(bindingContext);
         }
 
         private Task BindModelAsyncInternal(ModelBindingContext bindingContext)

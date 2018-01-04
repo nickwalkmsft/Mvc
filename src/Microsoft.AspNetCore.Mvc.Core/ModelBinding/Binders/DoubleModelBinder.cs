@@ -18,6 +18,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     public class DoubleModelBinder : IModelBinder
     {
         private readonly NumberStyles _supportedStyles;
+        private readonly ILogger _logger;
 
         public DoubleModelBinder(NumberStyles supportedStyles)
             : this(supportedStyles, NullLoggerFactory.Instance)
@@ -27,14 +28,9 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         public DoubleModelBinder(NumberStyles supportedStyles, ILoggerFactory loggerFactory)
         {
             _supportedStyles = supportedStyles;
-            Logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger(GetType());
         }
-
-        /// <summary>
-        /// The <see cref="ILogger"/> used for logging in this binder.
-        /// </summary>
-        protected ILogger Logger { get; }
-
+        
         /// <inheritdoc />
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
@@ -43,16 +39,16 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 throw new ArgumentNullException(nameof(bindingContext));
             }
 
-            Logger.AttemptingToBindModel(bindingContext);
+            _logger.AttemptingToBindModel(bindingContext);
 
             var modelName = bindingContext.ModelName;
             var valueProviderResult = bindingContext.ValueProvider.GetValue(modelName);
             if (valueProviderResult == ValueProviderResult.None)
             {
-                Logger.FoundNoValueInRequest(bindingContext);
+                _logger.FoundNoValueInRequest(bindingContext);
 
                 // no entry
-                Logger.DoneAttemptingToBindModel(bindingContext);
+                _logger.DoneAttemptingToBindModel(bindingContext);
                 return Task.CompletedTask;
             }
 
@@ -112,7 +108,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 // Conversion failed.
             }
 
-            Logger.DoneAttemptingToBindModel(bindingContext);
+            _logger.DoneAttemptingToBindModel(bindingContext);
             return Task.CompletedTask;
         }
     }
