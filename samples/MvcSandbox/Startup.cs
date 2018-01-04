@@ -38,8 +38,7 @@ namespace MvcSandbox
                 {
                     factory
                         .AddConsole()
-                        .AddDebug()
-                        .SetMinimumLevel(LogLevel.Debug);
+                        .AddDebug();
                 })
                 .UseIISIntegration()
                 .UseKestrel()
