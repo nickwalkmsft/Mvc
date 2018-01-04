@@ -34,7 +34,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         }
 
         /// <inheritdoc />
-        public async Task BindModelAsync(ModelBindingContext bindingContext)
+        public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             if (bindingContext == null)
             {
@@ -43,17 +43,12 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 
             _logger.AttemptingToBindModel(bindingContext);
 
-            await BindModelAsyncInternal(bindingContext);
-
-            _logger.DoneAttemptingToBindModel(bindingContext);
-        }
-
-        private Task BindModelAsyncInternal(ModelBindingContext bindingContext)
-        {
             // Check for missing data case 1: There was no <input ... /> element containing this data.
             var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
             if (valueProviderResult == ValueProviderResult.None)
             {
+                _logger.FoundNoValueInRequest(bindingContext);
+                _logger.DoneAttemptingToBindModel(bindingContext);
                 return Task.CompletedTask;
             }
 
@@ -63,6 +58,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
             var value = valueProviderResult.FirstValue;
             if (string.IsNullOrEmpty(value))
             {
+                _logger.FoundNoValueInRequest(bindingContext);
+                _logger.DoneAttemptingToBindModel(bindingContext);
                 return Task.CompletedTask;
             }
 
@@ -78,6 +75,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                     exception,
                     bindingContext.ModelMetadata);
             }
+
+            _logger.DoneAttemptingToBindModel(bindingContext);
             return Task.CompletedTask;
         }
     }
