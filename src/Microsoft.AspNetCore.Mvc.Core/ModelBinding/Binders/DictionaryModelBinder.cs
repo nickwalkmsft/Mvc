@@ -84,7 +84,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 // replaced the ValueProvider with something other than a CompositeValueProvider.
                 return;
             }
-            
+
             // Attempt to bind dictionary from a set of prefix[key]=value entries. Get the short and long keys first.
             var keys = enumerableValueProvider.GetKeysFromPrefix(bindingContext.ModelName);
             if (keys.Count == 0)
