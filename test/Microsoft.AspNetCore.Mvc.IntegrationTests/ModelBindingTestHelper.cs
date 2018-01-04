@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.Extensions.Options;
 
@@ -84,12 +85,14 @@ namespace Microsoft.AspNetCore.Mvc.IntegrationTests
             IModelMetadataProvider metadataProvider,
             IOptions<MvcOptions> options = null)
         {
+            var services = GetServices();
+
             if (options == null)
             {
-                options = GetServices().GetRequiredService<IOptions<MvcOptions>>();
+                options = services.GetRequiredService<IOptions<MvcOptions>>();
             }
 
-            return new ModelBinderFactory(metadataProvider, options);
+            return new ModelBinderFactory(metadataProvider, options, NullLoggerFactory.Instance, services);
         }
 
         public static IObjectModelValidator GetObjectValidator(
