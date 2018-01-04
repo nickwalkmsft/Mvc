@@ -101,7 +101,7 @@ namespace Microsoft.AspNetCore.Mvc.Internal
         private static readonly Action<ILogger, MethodInfo, string, string, Exception> _inferredParameterSource;
         private static readonly Action<ILogger, MethodInfo, Exception> _unableToInferParameterSources;
         private static readonly Action<ILogger, IModelBinderProvider[], Exception> _registeredModelBinderProviders;
-        private static readonly Action<ILogger, string, string, Type, Type, Exception> _foundNoValueForPropertyInRequest;
+        private static readonly Action<ILogger, string, Type, string, Type, Exception> _foundNoValueForPropertyInRequest;
         private static readonly Action<ILogger, string, string, Type, Exception> _foundNoValueInRequest;
         private static readonly Action<ILogger, string, Type, Exception> _noPublicSettableProperties;
         private static readonly Action<ILogger, Type, Exception> _cannotBindToComplexType;
@@ -114,8 +114,8 @@ namespace Microsoft.AspNetCore.Mvc.Internal
         private static readonly Action<ILogger, string, Exception> _noValueFromValueProviders;
         private static readonly Action<ILogger, string, Exception> _noPrefixFromValueProviders;
         private static readonly Action<ILogger, string, string, string, Exception> _noKeyValueFormatForDictionaryModelBinder;
-        private static readonly Action<ILogger, string, Type, Type, string, Exception> _attemptingToBindPropertyModel;
-        private static readonly Action<ILogger, string, Type, Type, Exception> _doneAttemptingToBindPropertyModel;
+        private static readonly Action<ILogger, Type, string, Type, string, Exception> _attemptingToBindPropertyModel;
+        private static readonly Action<ILogger, Type, string, Type, Exception> _doneAttemptingToBindPropertyModel;
         private static readonly Action<ILogger, Type, string, Exception> _attemptingToBindModel;
         private static readonly Action<ILogger, Type, string, Exception> _doneAttemptingToBindModel;
         private static readonly Action<ILogger, string, string, Type, Exception> _attemptingToBindParameter;
@@ -475,25 +475,25 @@ namespace Microsoft.AspNetCore.Mvc.Internal
                 12,
                 "Registered model binder providers, in the following order: {ModelBinderProviders}");
 
-            _attemptingToBindPropertyModel = LoggerMessage.Define<string, Type, Type, string>(
+            _attemptingToBindPropertyModel = LoggerMessage.Define<Type, string, Type, string>(
                LogLevel.Debug,
                13,
-               "Attempting to bind property '{PropertyName}'[{ModelType}] of type '{PropertyContainerType}' using the name '{ModelName}' in request data ...");
+               "Attempting to bind property '{PropertyContainerType}.{PropertyName}' of type '{ModelType}' using the name '{ModelName}' in request data ...");
 
-            _doneAttemptingToBindPropertyModel = LoggerMessage.Define<string, Type, Type>(
+            _doneAttemptingToBindPropertyModel = LoggerMessage.Define<Type, string, Type>(
                LogLevel.Debug,
                14,
-               "Done attempting to bind property '{PropertyName}'[{ModelType}] of type '{PropertyContainerType}'.");
+               "Done attempting to bind property '{PropertyContainerType}.{PropertyName}' of type '{ModelType}'.");
 
-            _foundNoValueForPropertyInRequest = LoggerMessage.Define<string, string, Type, Type>(
+            _foundNoValueForPropertyInRequest = LoggerMessage.Define<string, Type, string, Type>(
                LogLevel.Debug,
                15,
-               "Could not find a value in the request with name '{ModelName}' for binding property '{ModelFieldName}'[{ModelType}] of type '{PropertyContainerType}'.");
+               "Could not find a value in the request with name '{ModelName}' for binding property '{PropertyContainerType}.{ModelFieldName}' of type '{ModelType}'.");
 
             _foundNoValueInRequest = LoggerMessage.Define<string, string, Type>(
                LogLevel.Debug,
                16,
-               "Could not find a value in the request with name '{ModelName}' for binding parameter '{ModelFieldName}'[{ModelType}].");
+               "Could not find a value in the request with name '{ModelName}' for binding parameter '{ModelFieldName}' of type '{ModelType}'.");
 
             _noPublicSettableProperties = LoggerMessage.Define<string, Type>(
                LogLevel.Debug,
@@ -1126,8 +1126,8 @@ namespace Microsoft.AspNetCore.Mvc.Internal
                 _foundNoValueForPropertyInRequest(
                     logger,
                     bindingContext.ModelName,
-                    modelMetadata.PropertyName,
                     bindingContext.ModelType,
+                    modelMetadata.PropertyName,
                     modelMetadata.ContainerType,
                     null);
             }
@@ -1181,8 +1181,8 @@ namespace Microsoft.AspNetCore.Mvc.Internal
             {
                 _attemptingToBindPropertyModel(
                     logger,
-                    modelMetadata.PropertyName,
                     modelMetadata.ModelType,
+                    modelMetadata.PropertyName,
                     modelMetadata.ContainerType,
                     bindingContext.ModelName,
                     null);
@@ -1202,8 +1202,8 @@ namespace Microsoft.AspNetCore.Mvc.Internal
             {
                 _doneAttemptingToBindPropertyModel(
                     logger,
-                    modelMetadata.PropertyName,
                     modelMetadata.ModelType,
+                    modelMetadata.PropertyName,
                     modelMetadata.ContainerType,
                     null);
             }
