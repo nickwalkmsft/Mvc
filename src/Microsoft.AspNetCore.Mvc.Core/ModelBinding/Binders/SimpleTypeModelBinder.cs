@@ -21,6 +21,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// <summary>
         /// Initializes a new instance of <see cref="SimpleTypeModelBinder"/>.
         /// </summary>
+        [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public SimpleTypeModelBinder()
             : this(NullLoggerFactory.Instance)
         {
@@ -39,6 +40,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// Initializes a new instance of <see cref="SimpleTypeModelBinder"/>.
         /// </summary>
         /// <param name="type">The type to create binder for.</param>
+        [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public SimpleTypeModelBinder(Type type)
             : this(type, NullLoggerFactory.Instance)
         {

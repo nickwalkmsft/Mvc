@@ -25,11 +25,12 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     {
         private Func<object> _modelCreator;
         private readonly ILoggerFactory _loggerFactory;
-        
+
         /// <summary>
         /// Creates a new <see cref="CollectionModelBinder{TElement}"/>.
         /// </summary>
         /// <param name="elementBinder">The <see cref="IModelBinder"/> for binding elements.</param>
+        [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public CollectionModelBinder(IModelBinder elementBinder)
             : this(elementBinder, NullLoggerFactory.Instance)
         {

@@ -15,6 +15,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     {
         private readonly bool _suppressBindingUndefinedValueToEnumType;
 
+        [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public EnumTypeModelBinder(bool supressBindingUndefinedValueToEnumType, Type modelType)
             : this(supressBindingUndefinedValueToEnumType, modelType, NullLoggerFactory.Instance)
         {

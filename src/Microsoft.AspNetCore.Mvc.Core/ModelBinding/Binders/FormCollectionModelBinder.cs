@@ -24,6 +24,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// <summary>
         /// Initializes a new instance of <see cref="FormCollectionModelBinder"/>.
         /// </summary>
+        [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public FormCollectionModelBinder()
             : this(NullLoggerFactory.Instance)
         {

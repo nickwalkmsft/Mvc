@@ -19,6 +19,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// <summary>
         /// Initializes a new instance of <see cref="ByteArrayModelBinder"/>.
         /// </summary>
+        [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public ByteArrayModelBinder()
             : this(NullLoggerFactory.Instance)
         {

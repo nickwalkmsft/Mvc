@@ -27,6 +27,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// </summary>
         /// <param name="keyBinder">The <see cref="IModelBinder"/> for <typeparamref name="TKey"/>.</param>
         /// <param name="valueBinder">The <see cref="IModelBinder"/> for <typeparamref name="TValue"/>.</param>
+        [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public KeyValuePairModelBinder(IModelBinder keyBinder, IModelBinder valueBinder)
             : this(keyBinder, valueBinder, NullLoggerFactory.Instance)
         {

@@ -26,6 +26,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// <summary>
         /// Initializes a new instance of <see cref="FormFileModelBinder"/>.
         /// </summary>
+        [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public FormFileModelBinder()
             : this(NullLoggerFactory.Instance)
         {

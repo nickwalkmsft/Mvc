@@ -5,6 +5,7 @@ using System;
 using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
@@ -95,7 +96,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 .ForProperty<Widget>(nameof(Widget.Id))
                 .BindingDetails(m => m.IsBindingAllowed = false);
 
-            var modelBinder = new ByteArrayModelBinder();
+            var modelBinder = new ByteArrayModelBinder(NullLoggerFactory.Instance);
 
             var options = Options.Create(new MvcOptions());
             options.Value.ModelBinderProviders.Add(new TestModelBinderProvider(c =>

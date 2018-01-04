@@ -20,6 +20,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         private readonly NumberStyles _supportedStyles;
         private readonly ILogger _logger;
 
+        [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public DoubleModelBinder(NumberStyles supportedStyles)
             : this(supportedStyles, NullLoggerFactory.Instance)
         {

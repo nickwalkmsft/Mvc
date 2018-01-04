@@ -25,6 +25,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// <summary>
         /// Initializes an instance of <see cref="ComplexTypeModelBinder"/>.
         /// </summary>
+        [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public ComplexTypeModelBinder()
             : this(NullLoggerFactory.Instance)
         {
@@ -45,6 +46,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// <param name="propertyBinders">
         /// The <see cref="IDictionary{TKey, TValue}"/> of binders to use for binding properties.
         /// </param>
+        [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public ComplexTypeModelBinder(IDictionary<ModelMetadata, IModelBinder> propertyBinders)
             : this(NullLoggerFactory.Instance)
         {

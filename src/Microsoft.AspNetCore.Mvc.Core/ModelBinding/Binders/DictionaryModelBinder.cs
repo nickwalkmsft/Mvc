@@ -28,6 +28,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// </summary>
         /// <param name="keyBinder">The <see cref="IModelBinder"/> for <typeparamref name="TKey"/>.</param>
         /// <param name="valueBinder">The <see cref="IModelBinder"/> for <typeparamref name="TValue"/>.</param>
+        [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public DictionaryModelBinder(IModelBinder keyBinder, IModelBinder valueBinder)
             : this(keyBinder, valueBinder, NullLoggerFactory.Instance)
         {
@@ -40,7 +41,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// <param name="valueBinder">The <see cref="IModelBinder"/> for <typeparamref name="TValue"/>.</param>
         /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
         public DictionaryModelBinder(IModelBinder keyBinder, IModelBinder valueBinder, ILoggerFactory loggerFactory)
-            : base(new KeyValuePairModelBinder<TKey, TValue>(keyBinder, valueBinder), loggerFactory)
+            : base(new KeyValuePairModelBinder<TKey, TValue>(keyBinder, valueBinder, loggerFactory), loggerFactory)
         {
             if (valueBinder == null)
             {

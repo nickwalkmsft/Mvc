@@ -23,6 +23,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// <param name="elementBinder">
         /// The <see cref="IModelBinder"/> for binding <typeparamref name="TElement"/>.
         /// </param>
+        [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public ArrayModelBinder(IModelBinder elementBinder)
             : this(elementBinder, NullLoggerFactory.Instance)
         {
