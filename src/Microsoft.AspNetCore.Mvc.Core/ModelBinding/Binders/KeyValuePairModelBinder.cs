@@ -51,6 +51,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 throw new ArgumentNullException(nameof(valueBinder));
             }
 
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
             _keyBinder = keyBinder;
             _valueBinder = valueBinder;
             _logger = loggerFactory.CreateLogger(GetType());

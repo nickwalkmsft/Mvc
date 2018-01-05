@@ -48,6 +48,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 throw new ArgumentNullException(nameof(elementBinder));
             }
 
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
             ElementBinder = elementBinder;
             _loggerFactory = loggerFactory;
             Logger = loggerFactory.CreateLogger(GetType());

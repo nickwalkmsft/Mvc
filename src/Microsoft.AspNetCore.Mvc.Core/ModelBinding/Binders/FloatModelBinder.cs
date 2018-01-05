@@ -28,6 +28,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 
         public FloatModelBinder(NumberStyles supportedStyles, ILoggerFactory loggerFactory)
         {
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
             _supportedStyles = supportedStyles;
             _logger = loggerFactory.CreateLogger(GetType());
         }

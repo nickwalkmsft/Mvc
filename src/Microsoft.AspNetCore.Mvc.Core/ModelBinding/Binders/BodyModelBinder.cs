@@ -81,6 +81,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 throw new ArgumentNullException(nameof(readerFactory));
             }
 
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
             _formatters = formatters;
             _readerFactory = readerFactory.CreateReader;
             _logger = loggerFactory.CreateLogger(GetType());

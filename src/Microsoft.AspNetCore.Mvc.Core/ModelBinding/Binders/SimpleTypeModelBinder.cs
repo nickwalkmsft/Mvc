@@ -33,6 +33,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
         public SimpleTypeModelBinder(ILoggerFactory loggerFactory)
         {
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
             Logger = loggerFactory.CreateLogger(GetType());
         }
 
@@ -56,6 +61,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
             if (type == null)
             {
                 throw new ArgumentNullException(nameof(type));
+            }
+
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
             }
 
             _typeConverter = TypeDescriptor.GetConverter(type);
