@@ -17,7 +17,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         private readonly ILogger _logger;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ByteArrayModelBinder"/>.
+        /// <para>This constructor is obsolete and will be removed in a future version.</para>
+        /// <para>Initializes a new instance of <see cref="ByteArrayModelBinder"/>.</para>
         /// </summary>
         [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public ByteArrayModelBinder()
@@ -36,7 +37,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
-            _logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger<ByteArrayModelBinder>();
         }
 
         /// <inheritdoc />

@@ -18,14 +18,24 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     public class DoubleModelBinder : IModelBinder
     {
         private readonly NumberStyles _supportedStyles;
-        private readonly ILogger _logger;
+        private readonly ILogger<DoubleModelBinder> _logger;
 
+        /// <summary>
+        /// <para>This constructor is obsolete and will be removed in a future version.</para>
+        /// <para>Initializes a new instance of <see cref="DoubleModelBinder"/>.</para>
+        /// </summary>
+        /// <param name="supportedStyles">The <see cref="NumberStyles"/>.</param>
         [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public DoubleModelBinder(NumberStyles supportedStyles)
             : this(supportedStyles, NullLoggerFactory.Instance)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="DoubleModelBinder"/>.
+        /// </summary>
+        /// <param name="supportedStyles">The <see cref="NumberStyles"/>.</param>
+        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
         public DoubleModelBinder(NumberStyles supportedStyles, ILoggerFactory loggerFactory)
         {
             if (loggerFactory == null)
@@ -34,7 +44,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
             }
 
             _supportedStyles = supportedStyles;
-            _logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger<DoubleModelBinder>();
         }
         
         /// <inheritdoc />

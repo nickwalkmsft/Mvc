@@ -17,7 +17,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     public class ArrayModelBinder<TElement> : CollectionModelBinder<TElement>
     {
         /// <summary>
-        /// Creates a new <see cref="ArrayModelBinder{TElement}"/>.
+        /// <para>This constructor is obsolete and will be removed in a future version.</para>
+        /// <para>Creates a new <see cref="ArrayModelBinder{TElement}"/>.</para>
         /// </summary>
         /// <param name="elementBinder">
         /// The <see cref="IModelBinder"/> for binding <typeparamref name="TElement"/>.

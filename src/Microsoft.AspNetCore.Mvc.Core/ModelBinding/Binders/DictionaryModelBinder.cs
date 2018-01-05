@@ -24,7 +24,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         private readonly IModelBinder _valueBinder;
 
         /// <summary>
-        /// Creates a new <see cref="DictionaryModelBinder{TKey, TValue}"/>.
+        /// <para>This constructor is obsolete and will be removed in a future version.</para>
+        /// <para>Creates a new <see cref="DictionaryModelBinder{TKey, TValue}"/>.</para>
         /// </summary>
         /// <param name="keyBinder">The <see cref="IModelBinder"/> for <typeparamref name="TKey"/>.</param>
         /// <param name="valueBinder">The <see cref="IModelBinder"/> for <typeparamref name="TValue"/>.</param>

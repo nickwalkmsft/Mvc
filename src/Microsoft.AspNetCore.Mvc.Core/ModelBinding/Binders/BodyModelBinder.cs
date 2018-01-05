@@ -88,7 +88,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 
             _formatters = formatters;
             _readerFactory = readerFactory.CreateReader;
-            _logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger<BodyModelBinder>();
 
             _options = options;
         }
@@ -135,7 +135,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 {
                     formatter = _formatters[i];
                     _logger.InputFormatterSelected(formatter, formatterContext);
-                    _logger.DoneAttemptingToBindModel(bindingContext);
                     break;
                 }
                 else

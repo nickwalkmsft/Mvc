@@ -93,7 +93,7 @@ namespace Microsoft.AspNetCore.Mvc.IntegrationTests
                 options = services.GetRequiredService<IOptions<MvcOptions>>();
             }
 
-            return new ModelBinderFactory(metadataProvider, options, NullLoggerFactory.Instance, services);
+            return new ModelBinderFactory(metadataProvider, options, services);
         }
 
         public static IObjectModelValidator GetObjectValidator(

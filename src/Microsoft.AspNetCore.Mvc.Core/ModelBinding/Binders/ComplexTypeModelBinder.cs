@@ -23,30 +23,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         private Func<object> _modelCreator;
 
         /// <summary>
-        /// Initializes an instance of <see cref="ComplexTypeModelBinder"/>.
-        /// </summary>
-        [Obsolete("This constructor is obsolete and will be removed in a future version.")]
-        public ComplexTypeModelBinder()
-            : this(NullLoggerFactory.Instance)
-        {
-        }
-
-        /// <summary>
-        /// Initializes an instance of <see cref="ComplexTypeModelBinder"/>.
-        /// </summary>
-        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
-        public ComplexTypeModelBinder(ILoggerFactory loggerFactory)
-        {
-            if (loggerFactory == null)
-            {
-                throw new ArgumentNullException(nameof(loggerFactory));
-            }
-
-            _logger = loggerFactory.CreateLogger(GetType());
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="ComplexTypeModelBinder"/>.
+        /// <para>This constructor is obsolete and will be removed in a future version.</para>
+        /// <para>Creates a new <see cref="ComplexTypeModelBinder"/>.</para>
         /// </summary>
         /// <param name="propertyBinders">
         /// The <see cref="IDictionary{TKey, TValue}"/> of binders to use for binding properties.
@@ -85,7 +63,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
             }
 
             _propertyBinders = propertyBinders;
-            _logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger<ComplexTypeModelBinder>();
         }
         
         /// <inheritdoc />

@@ -27,7 +27,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var factory = new ModelBinderFactory(
                 metadataProvider,
                 options,
-                NullLoggerFactory.Instance,
                 GetServices());
             var context = new ModelBinderFactoryContext()
             {
@@ -50,7 +49,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var factory = new ModelBinderFactory(
                 metadataProvider,
                 options,
-                NullLoggerFactory.Instance,
                 GetServices());
             var context = new ModelBinderFactoryContext()
             {
@@ -86,7 +84,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var factory = new ModelBinderFactory(
                 metadataProvider,
                 options,
-                NullLoggerFactory.Instance,
                 GetServices());
 
             var context = new ModelBinderFactoryContext()
@@ -126,7 +123,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var factory = new ModelBinderFactory(
                 metadataProvider,
                 options,
-                NullLoggerFactory.Instance,
                 GetServices());
 
             var context = new ModelBinderFactoryContext()
@@ -167,7 +163,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var factory = new ModelBinderFactory(
                 metadataProvider,
                 options,
-                NullLoggerFactory.Instance,
                 GetServices());
 
             var context = new ModelBinderFactoryContext()
@@ -208,7 +203,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var factory = new ModelBinderFactory(
                 metadataProvider,
                 options,
-                NullLoggerFactory.Instance,
                 GetServices());
 
             var context = new ModelBinderFactoryContext()
@@ -239,7 +233,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var factory = new ModelBinderFactory(
                 metadataProvider,
                 options,
-                NullLoggerFactory.Instance,
                 GetServices());
 
             var context = new ModelBinderFactoryContext()
@@ -271,7 +264,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var factory = new ModelBinderFactory(
                 metadataProvider,
                 options,
-                NullLoggerFactory.Instance,
                 GetServices());
 
             var context = new ModelBinderFactoryContext()
@@ -383,7 +375,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var factory = new ModelBinderFactory(
                 metadataProvider,
                 options,
-                NullLoggerFactory.Instance,
                 GetServices());
             var factoryContext = new ModelBinderFactoryContext
             {
@@ -440,7 +431,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var factory = new ModelBinderFactory(
                 metadataProvider,
                 options,
-                NullLoggerFactory.Instance,
                 GetServices());
 
             var context = new ModelBinderFactoryContext()
@@ -503,7 +493,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var factory = new ModelBinderFactory(
                 metadataProvider,
                 options,
-                NullLoggerFactory.Instance,
                 GetServices());
 
             var context = new ModelBinderFactoryContext()
@@ -558,7 +547,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var factory = new ModelBinderFactory(
                 metadataProvider,
                 options,
-                NullLoggerFactory.Instance,
                 GetServices());
 
             var context = new ModelBinderFactoryContext()
@@ -623,7 +611,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var factory = new ModelBinderFactory(
                 metadataProvider,
                 options,
-                NullLoggerFactory.Instance,
                 GetServices());
 
             var context = new ModelBinderFactoryContext()

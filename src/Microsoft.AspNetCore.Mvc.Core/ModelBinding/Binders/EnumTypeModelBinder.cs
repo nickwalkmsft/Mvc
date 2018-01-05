@@ -15,14 +15,30 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     {
         private readonly bool _suppressBindingUndefinedValueToEnumType;
 
+        /// <summary>
+        /// <para>This constructor is obsolete and will be removed in a future version.</para>
+        /// <para>Initializes a new instance of <see cref="EnumTypeModelBinder"/>.</para>
+        /// </summary>
+        /// <param name="suppressBindingUndefinedValueToEnumType">
+        /// Flag to determine if binding to undefined should be suppressed or not.
+        /// </param>
+        /// <param name="modelType">The mdoel type.</param>
         [Obsolete("This constructor is obsolete and will be removed in a future version.")]
-        public EnumTypeModelBinder(bool supressBindingUndefinedValueToEnumType, Type modelType)
-            : this(supressBindingUndefinedValueToEnumType, modelType, NullLoggerFactory.Instance)
+        public EnumTypeModelBinder(bool suppressBindingUndefinedValueToEnumType, Type modelType)
+            : this(suppressBindingUndefinedValueToEnumType, modelType, NullLoggerFactory.Instance)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="EnumTypeModelBinder"/>.
+        /// </summary>
+        /// <param name="suppressBindingUndefinedValueToEnumType">
+        /// Flag to determine if binding to undefined should be suppressed or not.
+        /// </param>
+        /// <param name="modelType">The mdoel type.</param>
+        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>,</param>
         public EnumTypeModelBinder(
-            bool supressBindingUndefinedValueToEnumType,
+            bool suppressBindingUndefinedValueToEnumType,
             Type modelType,
             ILoggerFactory loggerFactory)
             : base(modelType, loggerFactory)
@@ -32,7 +48,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 throw new ArgumentNullException(nameof(modelType));
             }
 
-            _suppressBindingUndefinedValueToEnumType = supressBindingUndefinedValueToEnumType;
+            _suppressBindingUndefinedValueToEnumType = suppressBindingUndefinedValueToEnumType;
         }
 
         protected override void CheckModel(

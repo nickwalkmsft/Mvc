@@ -20,10 +20,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     {
         private readonly IModelBinder _keyBinder;
         private readonly IModelBinder _valueBinder;
-        private readonly ILogger _logger;
+        private readonly ILogger<KeyValuePairModelBinder<TKey, TValue>> _logger;
 
         /// <summary>
-        /// Creates a new <see cref="KeyValuePair{TKey, TValue}"/>.
+        /// <para>This constructor is obsolete and will be removed in a future version.</para>
+        /// <para>Creates a new <see cref="KeyValuePair{TKey, TValue}"/>.</para>
         /// </summary>
         /// <param name="keyBinder">The <see cref="IModelBinder"/> for <typeparamref name="TKey"/>.</param>
         /// <param name="valueBinder">The <see cref="IModelBinder"/> for <typeparamref name="TValue"/>.</param>
@@ -58,7 +59,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 
             _keyBinder = keyBinder;
             _valueBinder = valueBinder;
-            _logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger<KeyValuePairModelBinder<TKey, TValue>>();
         }
 
         /// <inheritdoc />

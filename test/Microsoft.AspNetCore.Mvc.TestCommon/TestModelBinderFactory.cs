@@ -58,7 +58,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
         }
 
         protected TestModelBinderFactory(IModelMetadataProvider metadataProvider, IOptions<MvcOptions> options)
-            : base(metadataProvider, options, NullLoggerFactory.Instance, GetServices())
+            : base(metadataProvider, options, GetServices())
         {
         }
 

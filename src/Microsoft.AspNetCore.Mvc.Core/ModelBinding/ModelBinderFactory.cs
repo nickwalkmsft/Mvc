@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Mvc.Core;
 using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -24,18 +25,18 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
     {
         private readonly IModelMetadataProvider _metadataProvider;
         private readonly IModelBinderProvider[] _providers;
-        private readonly ILogger _logger;
         private readonly ConcurrentDictionary<Key, IModelBinder> _cache;
         private readonly IServiceProvider _serviceProvider;
 
         /// <summary>
-        /// Creates a new <see cref="ModelBinderFactory"/>.
+        /// <para>This constructor is obsolete and will be removed in a future version.</para>
+        /// <para>Creates a new <see cref="ModelBinderFactory"/>.</para>
         /// </summary>
         /// <param name="metadataProvider">The <see cref="IModelMetadataProvider"/>.</param>
         /// <param name="options">The <see cref="IOptions{TOptions}"/> for <see cref="MvcOptions"/>.</param>
         [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public ModelBinderFactory(IModelMetadataProvider metadataProvider, IOptions<MvcOptions> options)
-            : this(metadataProvider, options, NullLoggerFactory.Instance, serviceProvider: null)
+            : this(metadataProvider, options, GetDefaultServices())
         {
         }
 
@@ -44,22 +45,20 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
         /// </summary>
         /// <param name="metadataProvider">The <see cref="IModelMetadataProvider"/>.</param>
         /// <param name="options">The <see cref="IOptions{TOptions}"/> for <see cref="MvcOptions"/>.</param>
-        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/>.</param>
         public ModelBinderFactory(
             IModelMetadataProvider metadataProvider,
             IOptions<MvcOptions> options,
-            ILoggerFactory loggerFactory,
             IServiceProvider serviceProvider)
         {
             _metadataProvider = metadataProvider;
             _providers = options.Value.ModelBinderProviders.ToArray();
-            _logger = loggerFactory.CreateLogger(GetType());
-
+            _serviceProvider = serviceProvider;
             _cache = new ConcurrentDictionary<Key, IModelBinder>();
 
-            _logger.RegisteredModelBinderProviders(_providers);
-            _serviceProvider = serviceProvider;
+            var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+            var logger = loggerFactory.CreateLogger<ModelBinderFactory>();
+            logger.RegisteredModelBinderProviders(_providers);
         }
 
         /// <inheritdoc />
@@ -87,7 +86,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             // Perf: We're calling the Uncached version of the API here so we can:
             // 1. avoid allocating a context when the value is already cached
             // 2. avoid checking the cache twice when the value is not cached
-            var providerContext = new DefaultModelBinderProviderContext(this, context, _serviceProvider);
+            var providerContext = new DefaultModelBinderProviderContext(this, context);
             binder = CreateBinderCoreUncached(providerContext, context.CacheToken);
             if (binder == null)
             {
@@ -219,15 +218,20 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             return _cache.TryGetValue(new Key(metadata, cacheToken), out binder);
         }
 
+        private static IServiceProvider GetDefaultServices()
+        {
+            var services = new ServiceCollection();
+            services.AddSingleton<ILoggerFactory>(NullLoggerFactory.Instance);
+            return services.BuildServiceProvider();
+        }
+
         private class DefaultModelBinderProviderContext : ModelBinderProviderContext
         {
             private readonly ModelBinderFactory _factory;
-            private readonly IServiceProvider _serviceProvider;
 
             public DefaultModelBinderProviderContext(
                 ModelBinderFactory factory,
-                ModelBinderFactoryContext factoryContext,
-                IServiceProvider serviceProvider)
+                ModelBinderFactoryContext factoryContext)
             {
                 _factory = factory;
                 Metadata = factoryContext.Metadata;
@@ -242,13 +246,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
 
                 MetadataProvider = _factory._metadataProvider;
                 Visited = new Dictionary<Key, IModelBinder>();
-                _serviceProvider = serviceProvider;
             }
 
             private DefaultModelBinderProviderContext(
                 DefaultModelBinderProviderContext parent,
-                ModelMetadata metadata,
-                IServiceProvider serviceProvider)
+                ModelMetadata metadata)
             {
                 Metadata = metadata;
 
@@ -263,7 +265,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                     BindingSource = metadata.BindingSource,
                     PropertyFilterProvider = metadata.PropertyFilterProvider,
                 };
-                _serviceProvider = serviceProvider;
             }
 
             public override BindingInfo BindingInfo { get; }
@@ -274,7 +275,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
 
             public Dictionary<Key, IModelBinder> Visited { get; }
 
-            public override IServiceProvider Services => _serviceProvider;
+            public override IServiceProvider Services => _factory._serviceProvider;
 
             public override IModelBinder CreateBinder(ModelMetadata metadata)
             {
@@ -288,7 +289,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 // node there's no opportunity to customize binding info like there is for a parameter.
                 var token = metadata;
 
-                var nestedContext = new DefaultModelBinderProviderContext(this, metadata, _serviceProvider);
+                var nestedContext = new DefaultModelBinderProviderContext(this, metadata);
                 return _factory.CreateBinderCoreCached(nestedContext, token);
             }
         }

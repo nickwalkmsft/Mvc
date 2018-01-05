@@ -18,14 +18,24 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     public class DecimalModelBinder : IModelBinder
     {
         private readonly NumberStyles _supportedStyles;
-        private readonly ILogger _logger;
-        
+        private readonly ILogger<DecimalModelBinder> _logger;
+
+        /// <summary>
+        /// <para>This constructor is obsolete and will be removed in a future version.</para>
+        /// <para>Initializes a new instance of <see cref="DecimalModelBinder"/>.</para>
+        /// </summary>
+        /// <param name="supportedStyles">The <see cref="NumberStyles"/>.</param>
         [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public DecimalModelBinder(NumberStyles supportedStyles)
             : this(supportedStyles, NullLoggerFactory.Instance)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="DecimalModelBinder"/>.
+        /// </summary>
+        /// <param name="supportedStyles">The <see cref="NumberStyles"/>.</param>
+        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
         public DecimalModelBinder(NumberStyles supportedStyles, ILoggerFactory loggerFactory)
         {
             if (loggerFactory == null)
@@ -34,7 +44,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
             }
 
             _supportedStyles = supportedStyles;
-            _logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger<DecimalModelBinder>();
         }
         
         /// <inheritdoc />

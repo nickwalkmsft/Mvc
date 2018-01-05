@@ -23,7 +23,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
         private readonly ValidatorCache _validatorCache;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ParameterBinder"/>.
+        /// <para>This constructor is obsolete and will be removed in a future version.</para>
+        /// <para>Initializes a new instance of <see cref="ParameterBinder"/>.</para>
         /// </summary>
         /// <param name="modelMetadataProvider">The <see cref="IModelMetadataProvider"/>.</param>
         /// <param name="modelBinderFactory">The <see cref="IModelBinderFactory"/>.</param>

@@ -438,31 +438,6 @@ namespace Microsoft.AspNetCore.Mvc.Internal
                 11,
                 "List of registered output formatters, in the following order: {OutputFormatters}");
 
-            _ifMatchPreconditionFailed = LoggerMessage.Define<EntityTagHeaderValue>(
-                LogLevel.Debug,
-                12,
-                "Current request's If-Match header check failed as the file's current etag '{CurrentETag}' does not match with any of the supplied etags.");
-
-            _ifUnmodifiedSincePreconditionFailed = LoggerMessage.Define<DateTimeOffset?, DateTimeOffset?>(
-                LogLevel.Debug,
-                13,
-                "Current request's If-Unmodified-Since header check failed as the file was modified (at '{lastModified}') after the If-Unmodified-Since date '{IfUnmodifiedSinceDate}'.");
-
-            _ifRangeLastModifiedPreconditionFailed = LoggerMessage.Define<DateTimeOffset?, DateTimeOffset?>(
-                LogLevel.Debug,
-                14,
-                "Could not serve range as the file was modified (at {LastModified}) after the if-Range's last modified date '{IfRangeLastModified}'.");
-
-            _ifRangeETagPreconditionFailed = LoggerMessage.Define<EntityTagHeaderValue, EntityTagHeaderValue>(
-                LogLevel.Debug,
-                15,
-                "Could not serve range as the file's current etag '{CurrentETag}' does not match the If-Range etag '{IfRangeETag}'.");
-
-            _notEnabledForRangeProcessing = LoggerMessage.Define(
-                LogLevel.Debug,
-                16,
-                $"The file result has not been enabled for processing range requests. To enable it, set the property '{nameof(FileResult.EnableRangeProcessing)}' on the result to 'true'.");
-
             _writingRangeToBody = LoggerMessage.Define(
                 LogLevel.Debug,
                 17,
@@ -572,7 +547,32 @@ namespace Microsoft.AspNetCore.Mvc.Internal
             _noKeyValueFormatForDictionaryModelBinder = LoggerMessage.Define<string, string, string>(
                 LogLevel.Debug,
                 33,
-                "Attempting to bind model with name '{ModelName}' using the format {ModelName}[key]=value&{ModelName}[key]=value");
+                "Attempting to bind model with name '{ModelName}' using the format {ModelName}[key1]=value1&{ModelName}[key2]=value2");
+
+            _ifMatchPreconditionFailed = LoggerMessage.Define<EntityTagHeaderValue>(
+                LogLevel.Debug,
+                34,
+                "Current request's If-Match header check failed as the file's current etag '{CurrentETag}' does not match with any of the supplied etags.");
+
+            _ifUnmodifiedSincePreconditionFailed = LoggerMessage.Define<DateTimeOffset?, DateTimeOffset?>(
+                LogLevel.Debug,
+                35,
+                "Current request's If-Unmodified-Since header check failed as the file was modified (at '{lastModified}') after the If-Unmodified-Since date '{IfUnmodifiedSinceDate}'.");
+
+            _ifRangeLastModifiedPreconditionFailed = LoggerMessage.Define<DateTimeOffset?, DateTimeOffset?>(
+                LogLevel.Debug,
+                36,
+                "Could not serve range as the file was modified (at {LastModified}) after the if-Range's last modified date '{IfRangeLastModified}'.");
+
+            _ifRangeETagPreconditionFailed = LoggerMessage.Define<EntityTagHeaderValue, EntityTagHeaderValue>(
+                LogLevel.Debug,
+                37,
+                "Could not serve range as the file's current etag '{CurrentETag}' does not match the If-Range etag '{IfRangeETag}'.");
+
+            _notEnabledForRangeProcessing = LoggerMessage.Define(
+                LogLevel.Debug,
+                38,
+                $"The file result has not been enabled for processing range requests. To enable it, set the property '{nameof(FileResult.EnableRangeProcessing)}' on the result to 'true'.");
         }
 
         public static void RegisteredOutputFormatters(this ILogger logger, IEnumerable<IOutputFormatter> outputFormatters)

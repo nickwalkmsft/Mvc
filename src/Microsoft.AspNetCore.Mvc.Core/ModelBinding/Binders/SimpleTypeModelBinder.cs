@@ -17,9 +17,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     public class SimpleTypeModelBinder : IModelBinder
     {
         private readonly TypeConverter _typeConverter;
+        private readonly ILogger<SimpleTypeModelBinder> _logger;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="SimpleTypeModelBinder"/>.
+        /// <para>This constructor is obsolete and will be removed in a future version.</para>
+        /// <para>Initializes a new instance of <see cref="SimpleTypeModelBinder"/>.</para>
         /// </summary>
         [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public SimpleTypeModelBinder()
@@ -38,11 +40,12 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
-            Logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger<SimpleTypeModelBinder>();
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="SimpleTypeModelBinder"/>.
+        /// <para>This constructor is obsolete and will be removed in a future version.</para>
+        /// <para>Initializes a new instance of <see cref="SimpleTypeModelBinder"/>.</para>
         /// </summary>
         /// <param name="type">The type to create binder for.</param>
         [Obsolete("This constructor is obsolete and will be removed in a future version.")]
@@ -69,13 +72,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
             }
 
             _typeConverter = TypeDescriptor.GetConverter(type);
-            Logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger<SimpleTypeModelBinder>();
         }
-
-        /// <summary>
-        /// The <see cref="ILogger"/> used for logging in this binder.
-        /// </summary>
-        protected ILogger Logger { get; }
 
         /// <inheritdoc />
         public Task BindModelAsync(ModelBindingContext bindingContext)
@@ -88,14 +86,14 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
             var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
             if (valueProviderResult == ValueProviderResult.None)
             {
-                Logger.FoundNoValueInRequest(bindingContext);
+                _logger.FoundNoValueInRequest(bindingContext);
 
                 // no entry
-                Logger.DoneAttemptingToBindModel(bindingContext);
+                _logger.DoneAttemptingToBindModel(bindingContext);
                 return Task.CompletedTask;
             }
 
-            Logger.AttemptingToBindModel(bindingContext);
+            _logger.AttemptingToBindModel(bindingContext);
 
             bindingContext.ModelState.SetModelValue(bindingContext.ModelName, valueProviderResult);
 
@@ -131,7 +129,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 
                 CheckModel(bindingContext, valueProviderResult, model);
 
-                Logger.DoneAttemptingToBindModel(bindingContext);
+                _logger.DoneAttemptingToBindModel(bindingContext);
                 return Task.CompletedTask;
             }
             catch (Exception exception)

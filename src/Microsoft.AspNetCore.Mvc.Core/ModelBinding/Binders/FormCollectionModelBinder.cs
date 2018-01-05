@@ -19,10 +19,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     /// </summary>
     public class FormCollectionModelBinder : IModelBinder
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<FormCollectionModelBinder> _logger;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="FormCollectionModelBinder"/>.
+        /// <para>This constructor is obsolete and will be removed in a future version.</para>
+        /// <para>Initializes a new instance of <see cref="FormCollectionModelBinder"/>.</para>
         /// </summary>
         [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public FormCollectionModelBinder()
@@ -41,7 +42,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
-            _logger = loggerFactory.CreateLogger(GetType());
+            _logger = loggerFactory.CreateLogger<FormCollectionModelBinder>();
         }
         
         /// <inheritdoc />

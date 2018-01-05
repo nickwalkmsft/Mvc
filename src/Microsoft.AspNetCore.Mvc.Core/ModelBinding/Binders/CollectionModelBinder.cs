@@ -26,7 +26,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         private Func<object> _modelCreator;
 
         /// <summary>
-        /// Creates a new <see cref="CollectionModelBinder{TElement}"/>.
+        /// <para>This constructor is obsolete and will be removed in a future version.</para>
+        /// <para>Creates a new <see cref="CollectionModelBinder{TElement}"/>.</para>
         /// </summary>
         /// <param name="elementBinder">The <see cref="IModelBinder"/> for binding elements.</param>
         [Obsolete("This constructor is obsolete and will be removed in a future version.")]
@@ -205,13 +206,12 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 
             foreach (var value in values)
             {
-                bindingContext.ValueProvider = new CompositeValueProvider(
-                    new[]
-                    {
-                        // our temporary provider goes at the front of the list
-                        new ElementalValueProvider(bindingContext.ModelName, value, values.Culture),
-                        bindingContext.ValueProvider
-                    });
+                bindingContext.ValueProvider = new CompositeValueProvider
+                {
+                    // our temporary provider goes at the front of the list
+                    new ElementalValueProvider(bindingContext.ModelName, value, values.Culture),
+                    bindingContext.ValueProvider
+                };
 
                 using (bindingContext.EnterNestedScope(
                     elementMetadata,
