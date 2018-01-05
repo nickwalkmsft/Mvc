@@ -33,6 +33,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
         /// </summary>
         /// <param name="metadataProvider">The <see cref="IModelMetadataProvider"/>.</param>
         /// <param name="options">The <see cref="IOptions{TOptions}"/> for <see cref="MvcOptions"/>.</param>
+        [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public ModelBinderFactory(IModelMetadataProvider metadataProvider, IOptions<MvcOptions> options)
             : this(metadataProvider, options, NullLoggerFactory.Instance, serviceProvider: null)
         {
@@ -43,8 +44,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
         /// </summary>
         /// <param name="metadataProvider">The <see cref="IModelMetadataProvider"/>.</param>
         /// <param name="options">The <see cref="IOptions{TOptions}"/> for <see cref="MvcOptions"/>.</param>
-        /// <param name="loggerFactory"></param>
-        /// <param name="serviceProvider"></param>
+        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/>.</param>
+        /// <param name="serviceProvider">The <see cref="IServiceProvider"/>.</param>
         public ModelBinderFactory(
             IModelMetadataProvider metadataProvider,
             IOptions<MvcOptions> options,

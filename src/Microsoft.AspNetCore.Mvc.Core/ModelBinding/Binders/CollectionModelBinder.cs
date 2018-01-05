@@ -24,7 +24,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
     public class CollectionModelBinder<TElement> : ICollectionModelBinder
     {
         private Func<object> _modelCreator;
-        private readonly ILoggerFactory _loggerFactory;
 
         /// <summary>
         /// Creates a new <see cref="CollectionModelBinder{TElement}"/>.
@@ -54,7 +53,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
             }
 
             ElementBinder = elementBinder;
-            _loggerFactory = loggerFactory;
             Logger = loggerFactory.CreateLogger(GetType());
         }
 

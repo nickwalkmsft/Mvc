@@ -29,7 +29,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 nameof(ModelWithIntArrayProperty.ArrayProperty));
 
             var binder = new ArrayModelBinder<int>(
-                new SimpleTypeModelBinder(typeof(int), NullLoggerFactory.Instance), NullLoggerFactory.Instance);
+                new SimpleTypeModelBinder(typeof(int), NullLoggerFactory.Instance),
+                NullLoggerFactory.Instance);
 
             // Act
             await binder.BindModelAsync(bindingContext);
@@ -46,7 +47,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         {
             // Arrange
             var binder = new ArrayModelBinder<string>(
-                new SimpleTypeModelBinder(typeof(string), NullLoggerFactory.Instance), NullLoggerFactory.Instance);
+                new SimpleTypeModelBinder(typeof(string), NullLoggerFactory.Instance),
+                NullLoggerFactory.Instance);
 
             var bindingContext = CreateContext();
             bindingContext.IsTopLevelObject = true;
@@ -74,7 +76,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         {
             // Arrange
             var binder = new ArrayModelBinder<string>(
-                new SimpleTypeModelBinder(typeof(string), NullLoggerFactory.Instance), NullLoggerFactory.Instance);
+                new SimpleTypeModelBinder(typeof(string), NullLoggerFactory.Instance),
+                NullLoggerFactory.Instance);
 
             var bindingContext = CreateContext();
             bindingContext.ModelName = ModelNames.CreatePropertyModelName(prefix, "ArrayProperty");
@@ -131,7 +134,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 nameof(ModelWithIntArrayProperty.ArrayProperty));
 
             var binder = new ArrayModelBinder<int>(
-                new SimpleTypeModelBinder(typeof(int), NullLoggerFactory.Instance), NullLoggerFactory.Instance);
+                new SimpleTypeModelBinder(typeof(int), NullLoggerFactory.Instance),
+                NullLoggerFactory.Instance);
 
             // Act
             await binder.BindModelAsync(bindingContext);

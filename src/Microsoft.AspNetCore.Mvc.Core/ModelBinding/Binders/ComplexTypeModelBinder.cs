@@ -53,7 +53,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         /// </param>
         [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public ComplexTypeModelBinder(IDictionary<ModelMetadata, IModelBinder> propertyBinders)
-            : this(NullLoggerFactory.Instance)
+            : this(propertyBinders, NullLoggerFactory.Instance)
         {
             if (propertyBinders == null)
             {

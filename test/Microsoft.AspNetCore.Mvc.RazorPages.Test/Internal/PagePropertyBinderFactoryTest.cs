@@ -32,7 +32,8 @@ namespace Microsoft.AspNetCore.Mvc.RazorPages.Internal
             var binder = new ParameterBinder(
                 modelMetadataProvider,
                 TestModelBinderFactory.CreateDefault(),
-                Mock.Of<IModelValidatorProvider>());
+                Mock.Of<IModelValidatorProvider>(),
+                NullLoggerFactory.Instance);
 
             // Act
             var factory = PagePropertyBinderFactory.CreateBinder(binder, modelMetadataProvider, actionDescriptor);
@@ -55,7 +56,8 @@ namespace Microsoft.AspNetCore.Mvc.RazorPages.Internal
             var binder = new ParameterBinder(
                 TestModelMetadataProvider.CreateDefaultProvider(),
                 TestModelBinderFactory.CreateDefault(),
-                Mock.Of<IModelValidatorProvider>());
+                Mock.Of<IModelValidatorProvider>(),
+                NullLoggerFactory.Instance);
 
             // Act
             var factory = PagePropertyBinderFactory.CreateBinder(binder, modelMetadataProvider, actionDescriptor);
@@ -76,7 +78,8 @@ namespace Microsoft.AspNetCore.Mvc.RazorPages.Internal
             var binder = new ParameterBinder(
                 modelMetadataProvider,
                 TestModelBinderFactory.CreateDefault(),
-                Mock.Of<IModelValidatorProvider>());
+                Mock.Of<IModelValidatorProvider>(),
+                NullLoggerFactory.Instance);
 
             // Act
             var factory = PagePropertyBinderFactory.CreateBinder(binder, modelMetadataProvider, actionDescriptor);
@@ -98,7 +101,8 @@ namespace Microsoft.AspNetCore.Mvc.RazorPages.Internal
             var binder = new ParameterBinder(
                 modelMetadataProvider,
                 TestModelBinderFactory.CreateDefault(),
-                Mock.Of<IModelValidatorProvider>());
+                Mock.Of<IModelValidatorProvider>(),
+                NullLoggerFactory.Instance);
 
             // Act
             var factory = PagePropertyBinderFactory.CreateBinder(binder, modelMetadataProvider, actionDescriptor);
@@ -119,7 +123,8 @@ namespace Microsoft.AspNetCore.Mvc.RazorPages.Internal
             var binder = new ParameterBinder(
                 modelMetadataProvider,
                 TestModelBinderFactory.CreateDefault(),
-                Mock.Of<IModelValidatorProvider>());
+                Mock.Of<IModelValidatorProvider>(),
+                NullLoggerFactory.Instance);
 
             // Act
             var factory = PagePropertyBinderFactory.CreateBinder(binder, modelMetadataProvider, actionDescriptor);
@@ -141,7 +146,8 @@ namespace Microsoft.AspNetCore.Mvc.RazorPages.Internal
             var binder = new ParameterBinder(
                 modelMetadataProvider,
                 TestModelBinderFactory.CreateDefault(),
-                Mock.Of<IModelValidatorProvider>());
+                Mock.Of<IModelValidatorProvider>(),
+                NullLoggerFactory.Instance);
 
             // Act
             var factory = PagePropertyBinderFactory.CreateBinder(binder, modelMetadataProvider, actionDescriptor);
@@ -463,7 +469,8 @@ namespace Microsoft.AspNetCore.Mvc.RazorPages.Internal
                 : base(
                     TestModelMetadataProvider.CreateDefaultProvider(),
                     TestModelBinderFactory.CreateDefault(),
-                    Mock.Of<IModelValidatorProvider>())
+                    Mock.Of<IModelValidatorProvider>(),
+                    NullLoggerFactory.Instance)
             {
                 _args = args;
             }

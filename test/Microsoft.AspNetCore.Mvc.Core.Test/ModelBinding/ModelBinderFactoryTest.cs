@@ -5,6 +5,8 @@ using System;
 using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -22,7 +24,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 $"empty. At least one '{typeof(IModelBinderProvider).FullName}' is required to model bind.";
             var metadataProvider = new TestModelMetadataProvider();
             var options = Options.Create(new MvcOptions());
-            var factory = new ModelBinderFactory(metadataProvider, options);
+            var factory = new ModelBinderFactory(
+                metadataProvider,
+                options,
+                NullLoggerFactory.Instance,
+                GetServices());
             var context = new ModelBinderFactoryContext()
             {
                 Metadata = metadataProvider.GetMetadataForType(typeof(string)),
@@ -41,7 +47,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var options = Options.Create(new MvcOptions());
             options.Value.ModelBinderProviders.Add(new TestModelBinderProvider(_ => null));
 
-            var factory = new ModelBinderFactory(metadataProvider, options);
+            var factory = new ModelBinderFactory(
+                metadataProvider,
+                options,
+                NullLoggerFactory.Instance,
+                GetServices());
             var context = new ModelBinderFactoryContext()
             {
                 Metadata = metadataProvider.GetMetadataForType(typeof(string)),
@@ -73,7 +83,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 return null;
             }));
 
-            var factory = new ModelBinderFactory(metadataProvider, options);
+            var factory = new ModelBinderFactory(
+                metadataProvider,
+                options,
+                NullLoggerFactory.Instance,
+                GetServices());
 
             var context = new ModelBinderFactoryContext()
             {
@@ -109,7 +123,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 return null;
             }));
 
-            var factory = new ModelBinderFactory(metadataProvider, options);
+            var factory = new ModelBinderFactory(
+                metadataProvider,
+                options,
+                NullLoggerFactory.Instance,
+                GetServices());
 
             var context = new ModelBinderFactoryContext()
             {
@@ -146,7 +164,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 return null;
             }));
 
-            var factory = new ModelBinderFactory(metadataProvider, options);
+            var factory = new ModelBinderFactory(
+                metadataProvider,
+                options,
+                NullLoggerFactory.Instance,
+                GetServices());
 
             var context = new ModelBinderFactoryContext()
             {
@@ -183,7 +205,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 return Mock.Of<IModelBinder>();
             }));
 
-            var factory = new ModelBinderFactory(metadataProvider, options);
+            var factory = new ModelBinderFactory(
+                metadataProvider,
+                options,
+                NullLoggerFactory.Instance,
+                GetServices());
 
             var context = new ModelBinderFactoryContext()
             {
@@ -210,7 +236,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 return Mock.Of<IModelBinder>();
             }));
 
-            var factory = new ModelBinderFactory(metadataProvider, options);
+            var factory = new ModelBinderFactory(
+                metadataProvider,
+                options,
+                NullLoggerFactory.Instance,
+                GetServices());
 
             var context = new ModelBinderFactoryContext()
             {
@@ -238,7 +268,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 return Mock.Of<IModelBinder>();
             }));
 
-            var factory = new ModelBinderFactory(metadataProvider, options);
+            var factory = new ModelBinderFactory(
+                metadataProvider,
+                options,
+                NullLoggerFactory.Instance,
+                GetServices());
 
             var context = new ModelBinderFactoryContext()
             {
@@ -346,7 +380,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var options = Options.Create(new MvcOptions());
             options.Value.ModelBinderProviders.Insert(0, modelBinderProvider);
 
-            var factory = new ModelBinderFactory(metadataProvider, options);
+            var factory = new ModelBinderFactory(
+                metadataProvider,
+                options,
+                NullLoggerFactory.Instance,
+                GetServices());
             var factoryContext = new ModelBinderFactoryContext
             {
                 BindingInfo = parameterBindingInfo,
@@ -399,7 +437,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             options.Value.ModelBinderProviders.Add(widgetProvider);
             options.Value.ModelBinderProviders.Add(widgetIdProvider);
 
-            var factory = new ModelBinderFactory(metadataProvider, options);
+            var factory = new ModelBinderFactory(
+                metadataProvider,
+                options,
+                NullLoggerFactory.Instance,
+                GetServices());
 
             var context = new ModelBinderFactoryContext()
             {
@@ -458,7 +500,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             options.Value.ModelBinderProviders.Add(widgetProvider);
             options.Value.ModelBinderProviders.Add(widgetIdProvider);
 
-            var factory = new ModelBinderFactory(metadataProvider, options);
+            var factory = new ModelBinderFactory(
+                metadataProvider,
+                options,
+                NullLoggerFactory.Instance,
+                GetServices());
 
             var context = new ModelBinderFactoryContext()
             {
@@ -509,7 +555,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             options.Value.ModelBinderProviders.Add(widgetProvider);
             options.Value.ModelBinderProviders.Add(widgetIdProvider);
 
-            var factory = new ModelBinderFactory(metadataProvider, options);
+            var factory = new ModelBinderFactory(
+                metadataProvider,
+                options,
+                NullLoggerFactory.Instance,
+                GetServices());
 
             var context = new ModelBinderFactoryContext()
             {
@@ -570,7 +620,11 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             options.Value.ModelBinderProviders.Add(widgetProvider);
             options.Value.ModelBinderProviders.Add(widgetIdProvider);
 
-            var factory = new ModelBinderFactory(metadataProvider, options);
+            var factory = new ModelBinderFactory(
+                metadataProvider,
+                options,
+                NullLoggerFactory.Instance,
+                GetServices());
 
             var context = new ModelBinderFactoryContext()
             {
@@ -596,6 +650,13 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
 
             Assert.Equal(1, widgetProvider.SuccessCount);
             Assert.Equal(0, widgetIdProvider.SuccessCount);
+        }
+
+        private IServiceProvider GetServices()
+        {
+            var services = new ServiceCollection();
+            services.AddSingleton<ILoggerFactory>(NullLoggerFactory.Instance);
+            return services.BuildServiceProvider();
         }
 
         private class Widget

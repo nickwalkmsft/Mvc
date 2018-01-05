@@ -28,6 +28,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
         /// <param name="modelMetadataProvider">The <see cref="IModelMetadataProvider"/>.</param>
         /// <param name="modelBinderFactory">The <see cref="IModelBinderFactory"/>.</param>
         /// <param name="validatorProvider">The <see cref="IModelValidatorProvider"/>.</param>
+        [Obsolete("This constructor is obsolete and will be removed in a future version.")]
         public ParameterBinder(
             IModelMetadataProvider modelMetadataProvider,
             IModelBinderFactory modelBinderFactory,

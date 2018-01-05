@@ -98,7 +98,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var parameterBinder = new ParameterBinder(
                 metadataProvider,
                 factory.Object,
-                CreateMockValidatorProvider());
+                CreateMockValidatorProvider(),
+                NullLoggerFactory.Instance);
 
             var controllerContext = GetControllerContext();
 
@@ -148,7 +149,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             var argumentBinder = new ParameterBinder(
                 metadataProvider,
                 factory.Object,
-                CreateMockValidatorProvider());
+                CreateMockValidatorProvider(),
+                NullLoggerFactory.Instance);
 
             var valueProvider = new SimpleValueProvider
             {
@@ -362,7 +364,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             return new ParameterBinder(
                 mockModelMetadataProvider.Object,
                 mockModelBinderFactory.Object,
-                CreateMockValidatorProvider(validator));
+                CreateMockValidatorProvider(validator),
+                NullLoggerFactory.Instance);
         }
 
         private static ParameterBinder CreateBackCompatParameterBinder(

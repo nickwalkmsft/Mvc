@@ -78,7 +78,8 @@ namespace Microsoft.AspNetCore.Mvc.IntegrationTests
             return new ParameterBinder(
                 metadataProvider,
                 GetModelBinderFactory(metadataProvider, options),
-                new CompositeModelValidatorProvider(GetModelValidatorProviders(options)));
+                new CompositeModelValidatorProvider(GetModelValidatorProviders(options)),
+                NullLoggerFactory.Instance);
         }
 
         public static IModelBinderFactory GetModelBinderFactory(

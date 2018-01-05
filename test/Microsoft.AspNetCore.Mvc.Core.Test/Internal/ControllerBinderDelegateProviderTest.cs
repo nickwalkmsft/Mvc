@@ -1156,7 +1156,8 @@ namespace Microsoft.AspNetCore.Mvc.Internal
             return new ParameterBinder(
                 modelMetadataProvider ?? TestModelMetadataProvider.CreateDefaultProvider(),
                 factory,
-                validatorProvider.Object);
+                validatorProvider.Object,
+                NullLoggerFactory.Instance);
         }
 
         private static Mock<IModelValidator> CreateMockValidator()

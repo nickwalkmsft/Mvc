@@ -33,7 +33,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
         public abstract IModelMetadataProvider MetadataProvider { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="IServiceProvider"/>.
+        /// Gets the <see cref="IServiceProvider"/>.
         /// </summary>
         public virtual IServiceProvider Services { get; }
     }

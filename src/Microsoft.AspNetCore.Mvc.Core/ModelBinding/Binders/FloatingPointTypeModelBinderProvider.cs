@@ -17,7 +17,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
         // SimpleTypeModelBinder uses DecimalConverter and similar. Those TypeConverters default to NumberStyles.Float.
         // Internal for testing.
         internal static readonly NumberStyles SupportedStyles = NumberStyles.Float | NumberStyles.AllowThousands;
-        
+
         /// <inheritdoc />
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
