@@ -301,17 +301,14 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding.Binders
                 }
             }
 
-            if (hasBindableProperty && isAnyPropertyEnabledForValueProviderBasedBinding)
-            {
-                _logger.CannotBindToComplexType(bindingContext);
-            }
-
             if (hasBindableProperty && !isAnyPropertyEnabledForValueProviderBasedBinding)
             {
                 // All the properties are marked with a non value provider based marker like [FromHeader] or
                 // [FromBody].
                 return true;
             }
+
+            _logger.CannotBindToComplexType(bindingContext);
 
             return false;
         }
