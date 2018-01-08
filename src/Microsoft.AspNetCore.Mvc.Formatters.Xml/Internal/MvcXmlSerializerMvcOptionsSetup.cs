@@ -4,6 +4,7 @@
 using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
 
 namespace Microsoft.AspNetCore.Mvc.Formatters.Xml.Internal
 {
@@ -35,6 +36,10 @@ namespace Microsoft.AspNetCore.Mvc.Formatters.Xml.Internal
         /// <param name="options">The <see cref="MvcOptions"/>.</param>
         public void Configure(MvcOptions options)
         {
+            options.FormatterMappings.SetMediaTypeMappingForFormat(
+                "xml",
+                MediaTypeHeaderValue.Parse("application/xml"));
+
             options.OutputFormatters.Add(new XmlSerializerOutputFormatter(_loggerFactory));
             options.InputFormatters.Add(new XmlSerializerInputFormatter(options));
         }
