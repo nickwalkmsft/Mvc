@@ -36,9 +36,15 @@ namespace Microsoft.AspNetCore.Mvc.Formatters.Xml.Internal
         /// <param name="options">The <see cref="MvcOptions"/>.</param>
         public void Configure(MvcOptions options)
         {
-            options.FormatterMappings.SetMediaTypeMappingForFormat(
-                "xml",
-                MediaTypeHeaderValue.Parse("application/xml"));
+            // Do not override any user mapping
+            var key = "xml";
+            var mapping = options.FormatterMappings.GetMediaTypeMappingForFormat(key);
+            if (string.IsNullOrEmpty(mapping))
+            {
+                options.FormatterMappings.SetMediaTypeMappingForFormat(
+                    key,
+                    MediaTypeHeaderValue.Parse("application/xml"));
+            }
 
             options.OutputFormatters.Add(new XmlSerializerOutputFormatter(_loggerFactory));
             options.InputFormatters.Add(new XmlSerializerInputFormatter(options));

@@ -22,5 +22,21 @@ namespace Microsoft.AspNetCore.Mvc.Formatters.Xml.Internal
             var mappedContentType = options.FormatterMappings.GetMediaTypeMappingForFormat("xml");
             Assert.Equal("application/xml", mappedContentType);
         }
+
+        [Fact]
+        public void DoesNotOverrideExistingMapping()
+        {
+            // Arrange
+            var optionsSetup = new MvcXmlSerializerMvcOptionsSetup(NullLoggerFactory.Instance);
+            var options = new MvcOptions();
+            options.FormatterMappings.SetMediaTypeMappingForFormat("xml", "text/xml");
+
+            // Act
+            optionsSetup.Configure(options);
+
+            // Assert
+            var mappedContentType = options.FormatterMappings.GetMediaTypeMappingForFormat("xml");
+            Assert.Equal("text/xml", mappedContentType);
+        }
     }
 }

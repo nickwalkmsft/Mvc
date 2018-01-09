@@ -43,9 +43,15 @@ namespace Microsoft.AspNetCore.Mvc.Formatters.Xml.Internal
             options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter(_loggerFactory));
             options.InputFormatters.Add(new XmlDataContractSerializerInputFormatter(options));
 
-            options.FormatterMappings.SetMediaTypeMappingForFormat(
-                "xml",
-                MediaTypeHeaderValue.Parse("application/xml"));
+            // Do not override any user mapping
+            var key = "xml";
+            var mapping = options.FormatterMappings.GetMediaTypeMappingForFormat(key);
+            if (string.IsNullOrEmpty(mapping))
+            {
+                options.FormatterMappings.SetMediaTypeMappingForFormat(
+                    key,
+                    MediaTypeHeaderValue.Parse("application/xml"));
+            }
 
             options.ModelMetadataDetailsProviders.Add(new SuppressChildValidationMetadataProvider("System.Xml.Linq.XObject"));
             options.ModelMetadataDetailsProviders.Add(new SuppressChildValidationMetadataProvider("System.Xml.XmlNode"));
