@@ -204,6 +204,9 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Internal
 
             // Assert
             Assert.Same(precompiledView, result);
+
+            // This view doesn't have checksums so it can't be recompiled.
+            Assert.Empty(precompiledView.ExpirationTokens);
         }
 
         [Theory]
@@ -282,6 +285,9 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Internal
 
             // Assert - 2
             Assert.Same(precompiledView, result);
+
+            // This view doesn't have checksums so it can't be recompiled.
+            Assert.Empty(result.ExpirationTokens);
         }
 
         [Fact]
@@ -314,6 +320,9 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Internal
 
             // Assert - 2
             Assert.Same(precompiledView, result);
+
+            // This view doesn't have checksums so it can't be recompiled.
+            Assert.Empty(result.ExpirationTokens);
         }
 
         [Fact]
@@ -341,6 +350,11 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Internal
 
             // Assert
             Assert.Same(precompiledView, result);
+
+            // This view has checksums so it should also have tokens
+            Assert.Collection(
+                 result.ExpirationTokens,
+                 token => Assert.Same(fileProvider.GetChangeToken(path), token));
         }
 
         [Fact]
